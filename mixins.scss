@@ -1,0 +1,318 @@
+//------------------------------------------------------------
+//	Miscellaneous
+//------------------------------------------------------------
+
+
+// Font Size
+@mixin font-size($font-size: 17) {
+
+    font-size: #{$font-size}px;
+    font-size: #{$font-size / 10}rem;
+
+}
+
+
+// Helper for Justified Elements
+@mixin justified($margin-bottom: 14) {
+
+    text-align: justify;
+    margin: 0 auto;
+
+    &:after {
+
+        content: "";
+        display: block;
+        width: 100%;
+        margin-bottom: #{$margin-bottom}px;
+
+    }
+
+}
+
+
+// Absolute Center
+@mixin absolute-center {
+
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    margin-left: -50%;
+    margin-right: -50%;
+
+}
+
+//Vertical Centering
+@mixin vertical-align($position: relative) {
+
+    position: $position;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+}
+
+
+
+//------------------------------------------------------------
+//	Gradients
+//------------------------------------------------------------
+
+
+// Horizontal
+@mixin horizontal-gradient($startColor: $white, $endColor: $light-grey) {
+
+    background-color: $endColor;
+    background-image : -webkit-gradient(linear, 0 0, 100% 0, from($startColor), to($endColor)); // Safari 4+, Chrome 2+
+    background-image : -webkit-linear-gradient(left, $startColor, $endColor); // Safari 5.1+, Chrome 10+
+    background-image : -moz-linear-gradient(left, $startColor, $endColor); // FF 3.6+
+    background-image : -ms-linear-gradient(left, $startColor, $endColor); // IE10
+    background-image : -o-linear-gradient(left, $startColor, $endColor); // Opera 11.10
+    background-image : linear-gradient(left, $startColor, $endColor); // W3C
+    background-repeat: repeat-x;
+
+}
+
+// Vertical
+
+@mixin vertical-gradient($startColor: $white, $endColor: $light-grey) {
+
+    background: -webkit-gradient(linear, 0 0, 0 100%, from($startColor), to($endColor)); // Safari 4+, Chrome 2+
+    background: -webkit-linear-gradient(top, $startColor, $endColor); // Safari 5.1+, Chrome 10+
+    background: -moz-linear-gradient(top, $startColor, $endColor); // FF 3.6+
+    background: -ms-linear-gradient(top, $startColor, $endColor); // IE10
+    background: -o-linear-gradient(top, $startColor, $endColor); // Opera 11.10
+    background: linear-gradient(top, $startColor, $endColor); // W3C
+    background-repeat: repeat-x;
+
+}
+
+
+// Directional
+@mixin directional-gradient($startColor: $white, $endColor: $light-grey, $deg: 45deg) {
+
+    background-color : $endColor;
+    background-image : -moz-linear-gradient($deg, $startColor, $endColor); // FF 3.6+
+    background-image : -ms-linear-gradient($deg, $startColor, $endColor); // IE10
+    background-image : -webkit-linear-gradient($deg, $startColor, $endColor); // Safari 5.1+, Chrome 10+
+    background-image : -o-linear-gradient($deg, $startColor, $endColor); // Opera 11.10
+    background-image : linear-gradient($deg, $startColor, $endColor); // W3C
+    background-repeat: repeat-x;
+
+}
+
+
+//------------------------------------------------------------
+//	Shadows
+//------------------------------------------------------------
+
+
+// Box Shadow
+@mixin box-shadow($shadows...) {
+
+    -webkit-box-shadow: $shadows;
+    -moz-box-shadow: $shadows;
+    box-shadow: $shadows;
+
+}
+
+
+//------------------------------------------------------------
+//	Title
+//------------------------------------------------------------
+
+
+// Border Radius
+@mixin border-radius($border-radii...) {
+
+    -webkit-border-radius: $border-radii;
+    -moz-border-radius: $border-radii;
+    border-radius: $border-radii;
+
+}
+
+// Opacity
+@mixin opacity($opacity: .50) {
+
+    -webkit-opacity: $opacity;
+    -moz-opacity: $opacity;
+    opacity: $opacity;
+
+}
+
+// Background Size
+@mixin background-size($size){
+
+    -webkit-background-size: $size;
+    -moz-background-size: $size;
+    -o-background-size: $size;
+    background-size: $size;
+
+}
+
+// Background Clip
+@mixin background-clip($clip) {
+
+    -webkit-background-clip: $clip;
+    -moz-background-clip: $clip;
+    background-clip: $clip;
+
+}
+
+
+//------------------------------------------------------------
+//	Visibility
+//------------------------------------------------------------
+
+
+// Hide from visual and speaking browsers
+@mixin hidden() {
+
+    display: none !important;
+    visibility: hidden;
+
+}
+
+// Hide but maintain layout
+@mixin invisible() { visibility: hidden; }
+
+// Hidden but available to speaking browsers
+@mixin visuallyhidden() {
+
+    overflow: hidden;
+    position: absolute;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+
+    // Make visuallyhidden focusable with a keyboard
+    &.focusable {
+
+        &:active,
+        &:focus {
+
+            position: static;
+            clip: auto;
+            height: auto;
+            width: auto;
+            margin: 0;
+            overflow: visible;
+
+        }
+
+    }
+
+}
+
+
+//------------------------------------------------------------
+//	Angles - Written by Rafael Heard
+//------------------------------------------------------------
+
+
+@mixin angle($pseudo, $flip: false, $angle: 2deg) {
+
+    // Possible values for $pseudo are: before, after, both
+    @if $pseudo == 'before' or $pseudo == 'after' or $pseudo == 'both' {
+
+        position: relative;
+        z-index: 1;
+        $selector: if($pseudo == 'both', '&:before,&:after', '&:#{$pseudo}');
+
+        #{$selector} {
+
+            background: inherit;
+            content: '';
+            display: block;
+            height: 50%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            z-index: -1;
+
+        }
+
+        @if $pseudo == 'before' {
+
+            #{$selector} {
+
+                top: 0;
+
+                @if $flip {
+                    @include transform(skewY($angle * -2));
+                    @include transform-origin(0 0);
+                } @else {
+                    @include transform(skewY($angle));
+                    @include transform-origin(100% 0);
+                }
+
+            }
+
+        }
+
+        @if $pseudo == 'after' {
+
+            #{$selector} {
+
+                bottom: 0;
+
+                @if $flip {
+                    @include transform(skewY($angle));
+                    @include transform-origin(0 100%);
+                } @else {
+                    @include transform(skewY($angle * -2));
+                    @include transform-origin(100%);
+                }
+
+            }
+
+        }
+
+        @if $pseudo == 'both' {
+
+            &:before {
+
+                top: 0;
+
+                @if $flip {
+                    @include transform(skewY($angle * -2));
+                    @include transform-origin(0 0);
+                } @else {
+                    @include transform(skewY($angle));
+                    @include transform-origin(100% 0);
+                }
+
+            }
+
+            &:after {
+
+                bottom: 0;
+
+                @if $flip {
+                    @include transform(skewY($angle));
+                    @include transform-origin(0 0);
+                } @else {
+                    @include transform(skewY($angle * -2));
+                    @include transform-origin(100%);
+                }
+
+            }
+
+        }
+    }
+
+}
+
+
+//------------------------------------------------------------
+//	Deprecated Bourbon Functions & Mixins
+//------------------------------------------------------------
+
+
+// Box-Sizing
+@mixin box-sizing($box) {
+    @include prefixer(box-sizing, $box, webkit moz spec);
+}
