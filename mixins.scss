@@ -1,5 +1,5 @@
 //------------------------------------------------------------
-//	Miscellaneous
+//  Miscellaneous
 //------------------------------------------------------------
 
 
@@ -55,7 +55,7 @@
 
 
 //------------------------------------------------------------
-//	Gradients
+//  Gradients
 //------------------------------------------------------------
 
 
@@ -103,7 +103,7 @@
 
 
 //------------------------------------------------------------
-//	Shadows
+//  Shadows
 //------------------------------------------------------------
 
 
@@ -118,7 +118,7 @@
 
 
 //------------------------------------------------------------
-//	Title
+//  Title
 //------------------------------------------------------------
 
 
@@ -161,7 +161,7 @@
 
 
 //------------------------------------------------------------
-//	Visibility
+//  Visibility
 //------------------------------------------------------------
 
 
@@ -209,7 +209,7 @@
 
 
 //------------------------------------------------------------
-//	Angles - Written by Rafael Heard
+//  Angles
 //------------------------------------------------------------
 
 
@@ -306,13 +306,46 @@
 
 }
 
-
 //------------------------------------------------------------
-//	Deprecated Bourbon Functions & Mixins
+//  Triangles
 //------------------------------------------------------------
 
+@mixin triangle($direction, $size: 6px, $color: #222){
+  
+    content: '';
+    display: block;
+    position: absolute;
+    height: 0; width: 0;
 
-// Box-Sizing
-@mixin box-sizing($box) {
-    @include prefixer(box-sizing, $box, webkit moz spec);
+  @if ($direction == 'up'){
+    
+    border-bottom: $size solid $color;
+    border-left: 1/2*$size solid transparent;
+    border-right: 1/2*$size solid transparent;
+
+  }
+
+  @else if ($direction == 'down'){
+    
+    border-top: $size solid $color;
+    border-left: 1/2*$size solid transparent;
+    border-right: 1/2*$size solid transparent;
+
+  }
+
+  @else if ($direction == 'left'){
+
+    border-top: 1/2*$size solid transparent;
+    border-bottom: 1/2*$size solid transparent;  
+    border-right: $size solid $color;
+
+  }
+
+  @else if ($direction == 'right'){
+    
+    border-top: 1/2*$size solid transparent;
+    border-bottom: 1/2*$size solid transparent;
+    border-left: $size solid $color;
+
+  }
 }
